@@ -1,6 +1,10 @@
+from typing import Tuple
 import pandas as pd
 import numpy as np
 
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.feature_selection import RFECV
+from sklearn.model_selection import KFold, train_test_split
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import StandardScaler
 
@@ -8,7 +12,7 @@ from sklearn.preprocessing import StandardScaler
 DATA_PATH = "/home/decaro/xai-hack/data/credit_card_churn.csv"
 
 
-def load_data():
+def load_data() -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
     """Load the data from the csv file."""
     df = pd.read_csv(DATA_PATH)
     df.drop(
@@ -19,7 +23,7 @@ def load_data():
         axis=1,
         inplace=True,
     )
-    reduce_mem_usage(df)
+    _reduce_mem_usage(df)
 
     # Label Encoding
     le_Education_Level = LabelEncoder()
@@ -77,9 +81,24 @@ def load_data():
     scaler = StandardScaler()
     x_data = scaler.fit_transform(x_data)
     x_data = pd.DataFrame(x_data, columns=x_cols)
+    X_train, X_test, y_train, y_test = train_test_split(
+        x_data, y_data, test_size=0.2, random_state=23, stratify=y_data
+    )
+    cv = KFold(n_splits=5, shuffle=True, random_state=23)
+    clf = RandomForestClassifier(n_jobs=-1)
+    rfecv = RFECV(
+        estimator=clf, step=1, cv=cv, scoring="recall", n_jobs=-1
+    )  # 5-fold cross-validation
+    rfecv = rfecv.fit(X_train, y_train)
+
+    print("Optimal number of features :", rfecv.n_features_)
+    print("Best features :", X_train.columns[rfecv.support_])
+    keep_cols = X_train.columns[rfecv.support_]
+    X_train, X_test = X_train[keep_cols], X_test[keep_cols]
+    return X_train, X_test, y_train, y_test
 
 
-def reduce_mem_usage(train_data: pd.DataFrame):
+def _reduce_mem_usage(train_data: pd.DataFrame):
     """iterate through all the columns of a dataframe and modify the data type
     to reduce memory usage.
     """
