@@ -1,0 +1,31 @@
+Failure # 1 (occurred at 2024-07-05_20-04-09)
+[36mray::ResourceTrainable.train()[39m (pid=2277718, ip=131.114.50.170, actor_id=d3d3373d1cf44f08ef0b061301000000, repr=<ray.tune.trainable.util.HackTrainable object at 0x7f3a669566d0>)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decaro/.conda/envs/xaihack/lib/python3.11/site-packages/ray/tune/trainable/trainable.py", line 331, in train
+    raise skipped from exception_cause(skipped)
+  File "/home/decaro/.conda/envs/xaihack/lib/python3.11/site-packages/ray/tune/trainable/trainable.py", line 328, in train
+    result = self.step()
+             ^^^^^^^^^^^
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decaro/xai-hack/hacklib/trainable.py", line 48, in step
+    explained_df = explain_fn(
+                   ^^^^^^^^^^^
+  File "/home/decaro/xai-hack/hacklib/explainers.py", line 62, in shap_fn
+    shap_exp_list = shap_explainer.explain(entry).exp
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decaro/xai-hack/XAI-Lib/src/xailib/explainers/shap_explainer_tab.py", line 79, in explain
+    exp = self.shap_explainer.shap_values(x)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decaro/.conda/envs/xaihack/lib/python3.11/site-packages/shap/explainers/_tree.py", line 444, in shap_values
+    phi = self.model.original_model.predict(X, num_iteration=tree_limit, pred_contrib=True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decaro/.conda/envs/xaihack/lib/python3.11/site-packages/lightgbm/basic.py", line 4738, in predict
+    return predictor.predict(
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/decaro/.conda/envs/xaihack/lib/python3.11/site-packages/lightgbm/basic.py", line 1183, in predict
+    preds, nrow = self.__pred_for_np2d(
+                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decaro/.conda/envs/xaihack/lib/python3.11/site-packages/lightgbm/basic.py", line 1317, in __pred_for_np2d
+    raise ValueError("Input numpy.ndarray or list must be 2 dimensional")
+ValueError: Input numpy.ndarray or list must be 2 dimensional

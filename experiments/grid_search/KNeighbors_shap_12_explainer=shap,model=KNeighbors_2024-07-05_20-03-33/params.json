@@ -1,0 +1,4 @@
+{
+  "explainer": "shap",
+  "model": "KNeighbors"
+}

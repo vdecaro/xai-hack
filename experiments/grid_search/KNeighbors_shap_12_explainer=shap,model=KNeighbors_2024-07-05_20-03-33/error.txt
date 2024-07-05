@@ -1,0 +1,24 @@
+Failure # 1 (occurred at 2024-07-05_20-04-11)
+[36mray::ResourceTrainable.train()[39m (pid=2277716, ip=131.114.50.170, actor_id=e74ba16a683669a5496d271d01000000, repr=<ray.tune.trainable.util.HackTrainable object at 0x7fa243ea49d0>)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decaro/.conda/envs/xaihack/lib/python3.11/site-packages/ray/tune/trainable/trainable.py", line 331, in train
+    raise skipped from exception_cause(skipped)
+  File "/home/decaro/.conda/envs/xaihack/lib/python3.11/site-packages/ray/tune/trainable/trainable.py", line 328, in train
+    result = self.step()
+             ^^^^^^^^^^^
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decaro/xai-hack/hacklib/trainable.py", line 48, in step
+    explained_df = explain_fn(
+                   ^^^^^^^^^^^
+  File "/home/decaro/xai-hack/hacklib/explainers.py", line 58, in shap_fn
+    shap_explainer.fit(config)
+  File "/home/decaro/xai-hack/XAI-Lib/src/xailib/explainers/shap_explainer_tab.py", line 68, in fit
+    self.shap_explainer = shap.TreeExplainer(self.bb.model())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decaro/.conda/envs/xaihack/lib/python3.11/site-packages/shap/explainers/_tree.py", line 195, in __init__
+    self.model = TreeEnsemble(model, self.data, self.data_missing, model_output)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/decaro/.conda/envs/xaihack/lib/python3.11/site-packages/shap/explainers/_tree.py", line 1217, in __init__
+    raise InvalidModelError("Model type not yet supported by TreeExplainer: " + str(type(model)))
+shap.utils._exceptions.InvalidModelError: Model type not yet supported by TreeExplainer: <class 'sklearn.neighbors._classification.KNeighborsClassifier'>
