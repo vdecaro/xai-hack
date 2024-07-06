@@ -26,10 +26,6 @@ def select_explainer(name: str):
         return shap_fn
     elif name == "lime":
         return lime_fn
-    elif name == "lore":
-        return lore_fn
-    elif name == "anchors":
-        return anchors_fn
     else:
         raise ValueError("Invalid explanation algorithm")
 
