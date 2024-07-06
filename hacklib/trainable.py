@@ -19,7 +19,7 @@ from .explainers import select_explainer, meta_explain
 class HackTrainable(tune.Trainable):
     def setup(self, _):
         self.stats_dir = os.path.join(
-            "/home/decaro/xai-hack/experiments/results", self.trial_name
+            "/home/decaro/xai-hack/experiments/kernel/results", self.trial_name
         )
         os.makedirs(self.stats_dir, exist_ok=True)
         print(self.stats_dir, "created")

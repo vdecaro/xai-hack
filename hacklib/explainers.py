@@ -14,6 +14,14 @@ from imblearn.over_sampling import SMOTE
 
 
 def select_explainer(name: str):
+    """Select the explainer function based on the name.
+
+    Args:
+        name (str): The name of the explainer.
+
+    Returns:
+        function: The explainer function.
+    """
     if name == "shap":
         return shap_fn
     elif name == "lime":
@@ -27,6 +35,18 @@ def select_explainer(name: str):
 
 
 def lime_fn(model, X_train, y_train, X_test, y_test):
+    """LIME explainer function.
+
+    Args:
+        model: The model to explain.
+        X_train: The training data.
+        y_train: The training labels.
+        X_test: The test data.
+        y_test: The test labels.
+
+    Returns:
+        pd.DataFrame: The explained entries.
+    """
     bbox = sklearn_classifier_wrapper(model)
 
     limeExplainer = LimeXAITabularExplainer(bbox)
@@ -51,10 +71,22 @@ def lime_fn(model, X_train, y_train, X_test, y_test):
 
 
 def shap_fn(model, X_train, _, X_test, y_test):
+    """SHAP explainer function.
+
+    Args:
+        model: The model to explain.
+        X_train: The training data.
+        y_train: The training labels.
+        X_test: The test data.
+        y_test: The test labels.
+
+    Returns:
+        pd.DataFrame: The explained entries.
+    """
     bbox = sklearn_classifier_wrapper(model)
 
     shap_explainer = ShapXAITabularExplainer(bbox, X_train.columns)
-    config = {"explainer": "tree", "X_train": X_train.values}
+    config = {"explainer": "kernel", "X_train": X_train.values}
     shap_explainer.fit(config)
     explained_entries = []
     for entry, y_gt in zip(X_test.values, y_test.values):
@@ -74,15 +106,15 @@ def shap_fn(model, X_train, _, X_test, y_test):
     return pd.DataFrame(explained_entries)
 
 
-def lore_fn():
-    pass
-
-
-def anchors_fn():
-    pass
-
-
 def meta_explain(explained_df):
+    """Meta explainer function for the deferrer.
+
+    Args:
+        explained_df: The dataframe to explain.
+
+    Returns:
+        dict: The metrics of the deferrer.
+    """
     explained_df = explained_df.fillna(0)
 
     # Split the dataset into X_explained a Y_explained (All features except Mismatch, and mismatch)

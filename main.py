@@ -25,7 +25,7 @@ def main():
     run_config = train.RunConfig(
         "grid_search",
         stop=OneIterStopper(),
-        storage_path="/home/decaro/xai-hack/experiments",
+        storage_path="/home/decaro/xai-hack/experiments/kernel",
     )
 
     tune_config = tune.TuneConfig(
